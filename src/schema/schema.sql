@@ -399,3 +399,16 @@ BEFORE UPDATE ON attempts
 FOR EACH ROW
 EXECUTE FUNCTION enforce_attempt_state_invariants();
 
+-- ----------------------------------------------------------------------------
+-- 14. PROJECT STAGE STATUS TRACKER (Persistent Progress Tracking)
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS project_stage_status (
+    stage_number INTEGER PRIMARY KEY,
+    stage_name VARCHAR(255) NOT NULL,
+    status VARCHAR(32) NOT NULL CHECK (status IN ('NOT_STARTED', 'IN_PROGRESS', 'COMPLETE')),
+    completed_at TIMESTAMPTZ NULL,
+    notes TEXT NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+
